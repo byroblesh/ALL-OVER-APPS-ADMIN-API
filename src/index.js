@@ -56,7 +56,9 @@ const buildApp = async () => {
 
   // CORS
   await app.register(cors, {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    origin: process.env.NODE_ENV === 'development'
+      ? true  // Allow all origins in development (enables Swagger UI)
+      : (process.env.CORS_ORIGIN || 'http://localhost:5173'),
     credentials: true,
   });
 

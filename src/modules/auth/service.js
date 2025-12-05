@@ -3,22 +3,22 @@ const { generateToken } = require('../../middleware/auth');
 
 /**
  * Auth Service
- * 
- * Gestiona autenticación de usuarios del Back Office (tu equipo).
- * 
- * NOTA: En producción, deberías usar una base de datos separada
- * para los admins del backoffice. Por simplicidad, este ejemplo
- * usa configuración en memoria/archivo.
+ *
+ * Manages authentication for Back Office users (your team).
+ *
+ * NOTE: In production, you should use a separate database
+ * for backoffice admins. For simplicity, this example
+ * uses in-memory/file configuration.
  */
 
-// En producción, mover esto a una DB dedicada para admins
-// Por ahora, definimos admins en variables de entorno o aquí
+// In production, move this to a dedicated DB for admins
+// For now, we define admins in environment variables or here
 const ADMIN_USERS = [
   {
     id: '1',
     email: 'admin@tuempresa.com',
-    // Password: admin123 (cambiar en producción)
-    passwordHash: '$2a$10$XQxBtJXKQXFJZ5GjGvGvUOzVZ5M5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5Q5O',
+    // Password: admin123 (change in production)
+    passwordHash: '$2a$10$A88rlrMDcrqYi5lEf1rP6emK.uwTQjpCCCsmWdmW1/ZPJdgjh.EoW',
     name: 'Admin',
     role: 'admin',
   },
@@ -26,34 +26,34 @@ const ADMIN_USERS = [
 
 class AuthService {
   /**
-   * Busca admin por email
+   * Find admin by email
    */
   async findByEmail(email) {
     return ADMIN_USERS.find(u => u.email.toLowerCase() === email.toLowerCase());
   }
 
   /**
-   * Verifica credenciales y genera token
+   * Verify credentials and generate token
    */
   async login(email, password) {
     const user = await this.findByEmail(email);
-    
+
     if (!user) {
       return { success: false, error: 'Invalid credentials' };
     }
 
-    // Para el primer login, si el hash no es válido, genera uno nuevo
-    // (útil para desarrollo - QUITAR en producción)
+    // For first login, if hash is invalid, generate a new one
+    // (useful for development - REMOVE in production)
     let isValidPassword = false;
     try {
       isValidPassword = await bcrypt.compare(password, user.passwordHash);
     } catch {
-      // Si el hash es inválido, en desarrollo permitimos crear uno nuevo
+      // If hash is invalid, in development we allow creating a new one
       if (process.env.NODE_ENV === 'development') {
         console.log('DEV: Generating new password hash...');
         const newHash = await bcrypt.hash(password, 10);
         console.log(`DEV: New hash for "${password}": ${newHash}`);
-        isValidPassword = true; // Permitir en desarrollo
+        isValidPassword = true; // Allow in development
       }
     }
 
@@ -76,19 +76,19 @@ class AuthService {
   }
 
   /**
-   * Genera hash de password (útil para crear nuevos admins)
+   * Generate password hash (useful for creating new admins)
    */
   async hashPassword(password) {
     return bcrypt.hash(password, 10);
   }
 
   /**
-   * Valida token y retorna usuario
+   * Validate token and return user
    */
   async validateToken(token) {
     const { verifyToken } = require('../../middleware/auth');
     const decoded = verifyToken(token);
-    
+
     if (!decoded) {
       return null;
     }
