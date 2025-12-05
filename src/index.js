@@ -13,7 +13,7 @@ const mongoConnector = require('./shared/mongoConnector');
 const PORT = process.env.PORT || 3001;
 
 /**
- * Crea y configura la instancia de Fastify
+ * Create and configure Fastify instance
  */
 const buildApp = async () => {
   const app = fastify({
@@ -37,7 +37,7 @@ const buildApp = async () => {
       },
       plugins: [
         function (ajv) {
-          // Añadir palabras clave de OpenAPI que no están en JSON Schema
+          // Add OpenAPI keywords not in JSON Schema
           ajv.addKeyword('example');
         }
       ]
@@ -48,10 +48,10 @@ const buildApp = async () => {
    * Plugins
    */
 
-  // Seguridad - Deshabilitar CSP para permitir Swagger UI
+  // Security - Disable CSP to allow Swagger UI
   await app.register(helmet, {
     global: true,
-    contentSecurityPolicy: false  // Desactivar CSP completamente para desarrollo
+    contentSecurityPolicy: false  // Disable CSP completely for development
   });
 
   // CORS
@@ -85,11 +85,11 @@ const buildApp = async () => {
         }
       ],
       tags: [
-        { name: 'Auth', description: 'Autenticación del Back Office' },
-        { name: 'Apps', description: 'Gestión de aplicaciones' },
-        { name: 'Users', description: 'Gestión de usuarios por app' },
-        { name: 'Templates', description: 'Gestión de templates de email' },
-        { name: 'Metrics', description: 'Métricas y analytics' },
+        { name: 'Auth', description: 'Back Office authentication' },
+        { name: 'Apps', description: 'Application management' },
+        { name: 'Users', description: 'User management per app' },
+        { name: 'Templates', description: 'Email template management' },
+        { name: 'Metrics', description: 'Metrics and analytics' },
         { name: 'Health', description: 'Health checks' }
       ],
       components: {
@@ -98,7 +98,7 @@ const buildApp = async () => {
             type: 'http',
             scheme: 'bearer',
             bearerFormat: 'JWT',
-            description: 'JWT token obtenido del endpoint /api/auth/login'
+            description: 'JWT token obtained from /api/auth/login endpoint'
           }
         }
       }
@@ -113,7 +113,7 @@ const buildApp = async () => {
       displayRequestDuration: true,
       filter: true
     },
-    // Configuración de UI
+    // UI configuration
     theme: {
       title: 'ALL OVER APPS - ADMIN API'
     },

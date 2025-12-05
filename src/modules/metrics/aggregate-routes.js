@@ -4,10 +4,10 @@ const { errorResponse, securityScheme } = require('../../shared/swagger-schemas'
 /**
  * Aggregate Metrics Routes (Fastify Plugin)
  *
- * Prefijo: /api/metrics/aggregate
+ * Prefix: /api/metrics/aggregate
  *
- * Endpoints que agregan datos de TODAS las aplicaciones.
- * No requieren appId - consultan todas las apps configuradas.
+ * Endpoints that aggregate data from ALL applications.
+ * Do not require appId - query all configured apps.
  *
  * @param {FastifyInstance} fastify
  * @param {Object} options
@@ -16,8 +16,8 @@ async function aggregateMetricsRoutes(fastify, options) {
   fastify.get('/dashboard', {
     schema: {
       tags: ['Metrics'],
-      summary: 'Dashboard agregado de todas las apps',
-      description: 'Obtiene métricas combinadas de todas las aplicaciones configuradas',
+      summary: 'Aggregated dashboard from all apps',
+      description: 'Get combined metrics from all configured applications',
       security: securityScheme,
       response: {
         200: {
@@ -29,7 +29,7 @@ async function aggregateMetricsRoutes(fastify, options) {
               properties: {
                 aggregate: {
                   type: 'object',
-                  description: 'Totales agregados de todas las apps',
+                  description: 'Aggregated totals from all apps',
                   properties: {
                     users: {
                       type: 'object',
@@ -53,7 +53,7 @@ async function aggregateMetricsRoutes(fastify, options) {
                 },
                 byApp: {
                   type: 'array',
-                  description: 'Dashboard individual de cada app',
+                  description: 'Individual dashboard for each app',
                   items: { type: 'object' }
                 }
               }
@@ -68,13 +68,13 @@ async function aggregateMetricsRoutes(fastify, options) {
   fastify.get('/users-over-time', {
     schema: {
       tags: ['Metrics'],
-      summary: 'Usuarios en el tiempo (todas las apps)',
-      description: 'Obtiene estadísticas de usuarios registrados por día, agregadas de todas las aplicaciones',
+      summary: 'Users over time (all apps)',
+      description: 'Get statistics of registered users per day, aggregated from all applications',
       security: securityScheme,
       querystring: {
         type: 'object',
         properties: {
-          days: { type: 'integer', default: 30, description: 'Número de días a consultar' }
+          days: { type: 'integer', default: 30, description: 'Number of days to query' }
         }
       },
       response: {
@@ -87,7 +87,7 @@ async function aggregateMetricsRoutes(fastify, options) {
               properties: {
                 aggregate: {
                   type: 'array',
-                  description: 'Datos agregados por fecha',
+                  description: 'Aggregated data by date',
                   items: {
                     type: 'object',
                     properties: {
@@ -99,7 +99,7 @@ async function aggregateMetricsRoutes(fastify, options) {
                 },
                 byApp: {
                   type: 'array',
-                  description: 'Datos individuales de cada app',
+                  description: 'Individual data for each app',
                   items: { type: 'object' }
                 }
               }
@@ -114,13 +114,13 @@ async function aggregateMetricsRoutes(fastify, options) {
   fastify.get('/top-shops', {
     schema: {
       tags: ['Metrics'],
-      summary: 'Top shops (todas las apps)',
-      description: 'Obtiene las tiendas con más usuarios, agregando datos de todas las aplicaciones. Si una tienda está en múltiples apps, se suman sus usuarios.',
+      summary: 'Top shops (all apps)',
+      description: 'Get shops with most users, aggregating data from all applications. If a shop is in multiple apps, their users are summed.',
       security: securityScheme,
       querystring: {
         type: 'object',
         properties: {
-          limit: { type: 'integer', default: 10, description: 'Número de tiendas a retornar' }
+          limit: { type: 'integer', default: 10, description: 'Number of shops to return' }
         }
       },
       response: {
@@ -133,7 +133,7 @@ async function aggregateMetricsRoutes(fastify, options) {
               properties: {
                 aggregate: {
                   type: 'array',
-                  description: 'Top shops agregados',
+                  description: 'Aggregated top shops',
                   items: {
                     type: 'object',
                     properties: {
@@ -146,7 +146,7 @@ async function aggregateMetricsRoutes(fastify, options) {
                 },
                 byApp: {
                   type: 'array',
-                  description: 'Top shops por app',
+                  description: 'Top shops per app',
                   items: { type: 'object' }
                 }
               }
@@ -161,13 +161,13 @@ async function aggregateMetricsRoutes(fastify, options) {
   fastify.get('/activity', {
     schema: {
       tags: ['Metrics'],
-      summary: 'Actividad reciente (todas las apps)',
-      description: 'Obtiene la actividad reciente de todas las aplicaciones, combinada y ordenada por timestamp',
+      summary: 'Recent activity (all apps)',
+      description: 'Get recent activity from all applications, combined and sorted by timestamp',
       security: securityScheme,
       querystring: {
         type: 'object',
         properties: {
-          limit: { type: 'integer', default: 20, description: 'Número de actividades a retornar' }
+          limit: { type: 'integer', default: 20, description: 'Number of activities to return' }
         }
       },
       response: {
@@ -177,7 +177,7 @@ async function aggregateMetricsRoutes(fastify, options) {
             success: { type: 'boolean', example: true },
             data: {
               type: 'array',
-              description: 'Lista de actividades recientes con información de la app',
+              description: 'List of recent activities with app information',
               items: {
                 type: 'object',
                 properties: {
@@ -199,8 +199,8 @@ async function aggregateMetricsRoutes(fastify, options) {
   fastify.get('/summary', {
     schema: {
       tags: ['Metrics'],
-      summary: 'Resumen rápido (todas las apps)',
-      description: 'Obtiene un resumen conciso de métricas clave para todas las aplicaciones',
+      summary: 'Quick summary (all apps)',
+      description: 'Get a concise summary of key metrics for all applications',
       security: securityScheme,
       response: {
         200: {
@@ -212,7 +212,7 @@ async function aggregateMetricsRoutes(fastify, options) {
               properties: {
                 totals: {
                   type: 'object',
-                  description: 'Totales agregados',
+                  description: 'Aggregated totals',
                   properties: {
                     totalUsers: { type: 'integer', example: 1500 },
                     activeUsers: { type: 'integer', example: 1200 },
@@ -222,7 +222,7 @@ async function aggregateMetricsRoutes(fastify, options) {
                 },
                 byApp: {
                   type: 'array',
-                  description: 'Resumen por app',
+                  description: 'Summary per app',
                   items: {
                     type: 'object',
                     properties: {

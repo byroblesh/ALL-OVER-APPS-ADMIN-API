@@ -11,6 +11,37 @@ ALL OVER APPS - ADMIN API is a Backend For Frontend (BFF) that provides centrali
 **Database**: MongoDB with Mongoose (multiple databases)
 **Documentation**: OpenAPI 3.0 via @fastify/swagger
 
+## Code Language Policy
+
+**ALL code, comments, documentation, and API schemas MUST be written in English.**
+
+This includes:
+- Variable and function names
+- Comments and JSDoc blocks
+- OpenAPI/Swagger summaries and descriptions
+- Error messages
+- Console log messages
+- Git commit messages
+- Documentation files
+
+**Examples:**
+
+✅ Good:
+```javascript
+// Get user statistics
+summary: 'User statistics'
+description: 'Get aggregated user statistics for an app'
+```
+
+❌ Bad:
+```javascript
+// Obtener estadísticas de usuarios
+summary: 'Estadísticas de usuarios'
+description: 'Obtiene estadísticas agregadas de usuarios de una app'
+```
+
+This ensures consistency, maintainability, and accessibility for international developers.
+
 ## Development Commands
 
 ```bash

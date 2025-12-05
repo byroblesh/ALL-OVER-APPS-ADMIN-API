@@ -4,7 +4,7 @@ const { errorResponse, securityScheme, appIdParam } = require('../../shared/swag
 /**
  * Metrics Routes (Fastify Plugin)
  *
- * Prefijo: /api/:appId/metrics
+ * Prefix: /api/:appId/metrics
  *
  * @param {FastifyInstance} fastify
  * @param {Object} options
@@ -13,8 +13,8 @@ async function metricsRoutes(fastify, options) {
   fastify.get('/dashboard', {
     schema: {
       tags: ['Metrics'],
-      summary: 'Dashboard general',
-      description: 'Obtiene métricas agregadas para el dashboard principal',
+      summary: 'General dashboard',
+      description: 'Get aggregated metrics for main dashboard',
       security: securityScheme,
       params: {
         type: 'object',
@@ -35,8 +35,8 @@ async function metricsRoutes(fastify, options) {
   fastify.get('/users-over-time', {
     schema: {
       tags: ['Metrics'],
-      summary: 'Usuarios en el tiempo',
-      description: 'Obtiene estadísticas de usuarios registrados por día',
+      summary: 'Users over time',
+      description: 'Get statistics of registered users per day',
       security: securityScheme,
       params: {
         type: 'object',
@@ -45,7 +45,7 @@ async function metricsRoutes(fastify, options) {
       querystring: {
         type: 'object',
         properties: {
-          days: { type: 'integer', default: 30, description: 'Número de días a consultar' }
+          days: { type: 'integer', default: 30, description: 'Number of days to query' }
         }
       }
     }
@@ -54,8 +54,8 @@ async function metricsRoutes(fastify, options) {
   fastify.get('/top-shops', {
     schema: {
       tags: ['Metrics'],
-      summary: 'Top tiendas',
-      description: 'Obtiene las tiendas con más usuarios',
+      summary: 'Top shops',
+      description: 'Get shops with most users',
       security: securityScheme,
       params: {
         type: 'object',
@@ -64,7 +64,7 @@ async function metricsRoutes(fastify, options) {
       querystring: {
         type: 'object',
         properties: {
-          limit: { type: 'integer', default: 10, description: 'Número de tiendas a retornar' }
+          limit: { type: 'integer', default: 10, description: 'Number of shops to return' }
         }
       }
     }
@@ -73,8 +73,8 @@ async function metricsRoutes(fastify, options) {
   fastify.get('/activity', {
     schema: {
       tags: ['Metrics'],
-      summary: 'Actividad reciente',
-      description: 'Obtiene la actividad reciente en la aplicación',
+      summary: 'Recent activity',
+      description: 'Get recent activity in the application',
       security: securityScheme,
       params: {
         type: 'object',
@@ -92,8 +92,8 @@ async function metricsRoutes(fastify, options) {
   fastify.get('/custom', {
     schema: {
       tags: ['Metrics'],
-      summary: 'Métricas personalizadas',
-      description: 'Obtiene métricas almacenadas personalizadas con filtros',
+      summary: 'Custom metrics',
+      description: 'Get stored custom metrics with filters',
       security: securityScheme,
       params: {
         type: 'object',
@@ -102,7 +102,7 @@ async function metricsRoutes(fastify, options) {
       querystring: {
         type: 'object',
         properties: {
-          type: { type: 'string', description: 'Tipo de métrica' },
+          type: { type: 'string', description: 'Metric type' },
           shop: { type: 'string' },
           startDate: { type: 'string', format: 'date' },
           endDate: { type: 'string', format: 'date' },

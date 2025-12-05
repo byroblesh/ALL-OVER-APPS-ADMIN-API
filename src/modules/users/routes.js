@@ -127,13 +127,13 @@ async function usersRoutes(fastify, options) {
   fastify.get('/:userId', {
     schema: {
       tags: ['Users'],
-      summary: 'Obtener usuario por ID',
+      summary: 'Get user by ID',
       security: securityScheme,
       params: {
         type: 'object',
         properties: {
           appId: appIdParam,
-          userId: { type: 'string', description: 'ID del usuario' }
+          userId: { type: 'string', description: 'User ID' }
         }
       },
       response: {
@@ -152,7 +152,7 @@ async function usersRoutes(fastify, options) {
   fastify.patch('/:userId', {
     schema: {
       tags: ['Users'],
-      summary: 'Actualizar usuario',
+      summary: 'Update user',
       security: securityScheme,
       params: {
         type: 'object',
@@ -186,7 +186,7 @@ async function usersRoutes(fastify, options) {
   fastify.patch('/:userId/status', {
     schema: {
       tags: ['Users'],
-      summary: 'Cambiar estado del usuario',
+      summary: 'Change user status',
       security: securityScheme,
       params: {
         type: 'object',
@@ -202,7 +202,7 @@ async function usersRoutes(fastify, options) {
           status: {
             type: 'string',
             enum: ['active', 'inactive', 'pending', 'blocked'],
-            description: 'Nuevo estado del usuario'
+            description: 'New user status'
           }
         }
       },

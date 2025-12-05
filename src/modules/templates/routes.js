@@ -4,18 +4,18 @@ const { errorResponse, securityScheme, appIdParam, paginationQuery } = require('
 /**
  * Templates Routes (Fastify Plugin)
  *
- * Prefijo: /api/:appId/templates
+ * Prefix: /api/:appId/templates
  *
  * @param {FastifyInstance} fastify
  * @param {Object} options
  */
 async function templatesRoutes(fastify, options) {
-  // Rutas especiales primero
+  // Special routes first
   fastify.get('/categories', {
     schema: {
       tags: ['Templates'],
-      summary: 'Categorías de templates',
-      description: 'Obtiene todas las categorías de templates disponibles',
+      summary: 'Template categories',
+      description: 'Get all available template categories',
       security: securityScheme,
       params: {
         type: 'object',
@@ -24,12 +24,12 @@ async function templatesRoutes(fastify, options) {
     }
   }, controller.getCategories);
 
-  // CRUD
+  // CRUD operations
   fastify.get('/', {
     schema: {
       tags: ['Templates'],
-      summary: 'Lista de templates',
-      description: 'Obtiene lista paginada de templates de email',
+      summary: 'List templates',
+      description: 'Get paginated list of email templates',
       security: securityScheme,
       params: {
         type: 'object',
@@ -51,8 +51,8 @@ async function templatesRoutes(fastify, options) {
   fastify.post('/', {
     schema: {
       tags: ['Templates'],
-      summary: 'Crear template',
-      description: 'Crea un nuevo template de email',
+      summary: 'Create template',
+      description: 'Create a new email template',
       security: securityScheme,
       params: {
         type: 'object',
@@ -76,7 +76,7 @@ async function templatesRoutes(fastify, options) {
   fastify.get('/:templateId', {
     schema: {
       tags: ['Templates'],
-      summary: 'Obtener template por ID',
+      summary: 'Get template by ID',
       security: securityScheme,
       params: {
         type: 'object',
@@ -91,7 +91,7 @@ async function templatesRoutes(fastify, options) {
   fastify.put('/:templateId', {
     schema: {
       tags: ['Templates'],
-      summary: 'Actualizar template',
+      summary: 'Update template',
       security: securityScheme,
       params: {
         type: 'object',
@@ -106,7 +106,7 @@ async function templatesRoutes(fastify, options) {
   fastify.delete('/:templateId', {
     schema: {
       tags: ['Templates'],
-      summary: 'Eliminar template',
+      summary: 'Delete template',
       security: securityScheme,
       params: {
         type: 'object',
@@ -118,11 +118,11 @@ async function templatesRoutes(fastify, options) {
     }
   }, controller.remove);
 
-  // Acciones especiales
+  // Special actions
   fastify.patch('/:templateId/toggle', {
     schema: {
       tags: ['Templates'],
-      summary: 'Activar/Desactivar template',
+      summary: 'Toggle template active status',
       security: securityScheme,
       params: {
         type: 'object',
@@ -144,7 +144,7 @@ async function templatesRoutes(fastify, options) {
   fastify.post('/:templateId/duplicate', {
     schema: {
       tags: ['Templates'],
-      summary: 'Duplicar template',
+      summary: 'Duplicate template',
       security: securityScheme,
       params: {
         type: 'object',
@@ -156,7 +156,7 @@ async function templatesRoutes(fastify, options) {
       body: {
         type: 'object',
         properties: {
-          slug: { type: 'string', description: 'Slug para el template duplicado' }
+          slug: { type: 'string', description: 'Slug for the duplicated template' }
         }
       }
     }

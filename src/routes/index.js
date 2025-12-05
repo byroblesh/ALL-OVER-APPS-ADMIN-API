@@ -2,7 +2,7 @@ const { auth } = require('../middleware/auth');
 const { appSelector } = require('../middleware/appSelector');
 const { errorResponse, securityScheme } = require('../shared/swagger-schemas');
 
-// Rutas de módulos
+// Module routes
 const authRoutes = require('../modules/auth/routes');
 const usersRoutes = require('../modules/users/routes');
 const templatesRoutes = require('../modules/templates/routes');
@@ -14,7 +14,7 @@ const { getAllApps } = require('../config/apps.config');
 const mongoConnector = require('../shared/mongoConnector');
 
 /**
- * Plugin de rutas principales (Fastify)
+ * Main routes plugin (Fastify)
  *
  * @param {FastifyInstance} fastify
  * @param {Object} options
@@ -26,8 +26,8 @@ async function routes(fastify, options) {
   fastify.get('/health', {
     schema: {
       tags: ['Health'],
-      summary: 'Health check del servidor',
-      description: 'Verifica el estado del servidor y las conexiones a bases de datos',
+      summary: 'Server health check',
+      description: 'Check server status and database connections',
       response: {
         200: {
           type: 'object',
@@ -37,9 +37,9 @@ async function routes(fastify, options) {
             databases: {
               type: 'object',
               properties: {
-                connected: { type: 'integer', description: 'Número de DBs conectadas' },
-                total: { type: 'integer', description: 'Número total de DBs configuradas' },
-                failed: { type: 'integer', description: 'Número de DBs con error' }
+                connected: { type: 'integer', description: 'Number of connected DBs' },
+                total: { type: 'integer', description: 'Total number of configured DBs' },
+                failed: { type: 'integer', description: 'Number of failed DBs' }
               }
             }
           }
@@ -56,18 +56,18 @@ async function routes(fastify, options) {
   });
 
   /**
-   * Auth (sin protección)
+   * Auth (no protection)
    */
   await fastify.register(authRoutes, { prefix: '/auth' });
 
   /**
-   * Lista de apps disponibles (protegido)
+   * List of available apps (protected)
    */
   fastify.get('/apps', {
     schema: {
       tags: ['Apps'],
-      summary: 'Lista de aplicaciones disponibles',
-      description: 'Obtiene la lista de todas las aplicaciones Shopify configuradas en el Back Office',
+      summary: 'List of available applications',
+      description: 'Get the list of all Shopify applications configured in the Back Office',
       security: securityScheme,
       response: {
         200: {
@@ -107,13 +107,13 @@ async function routes(fastify, options) {
   });
 
   /**
-   * Métricas agregadas (todas las apps)
+   * Aggregated metrics (all apps)
    *
-   * Estas rutas consultan TODAS las aplicaciones a la vez:
-   * - Requieren autenticación (auth hook)
-   * - NO requieren appId (trabajan con todas las apps)
+   * These routes query ALL applications at once:
+   * - Require authentication (auth hook)
+   * - Do NOT require appId (work with all apps)
    *
-   * Prefijo: /api/metrics/aggregate
+   * Prefix: /api/metrics/aggregate
    */
   await fastify.register(async (fastify) => {
     fastify.addHook('onRequest', auth);
@@ -121,16 +121,16 @@ async function routes(fastify, options) {
   });
 
   /**
-   * Rutas específicas por app
+   * App-specific routes
    *
-   * Todas estas rutas:
-   * 1. Requieren autenticación (auth hook)
-   * 2. Requieren selección de app (appSelector hook)
+   * All these routes:
+   * 1. Require authentication (auth hook)
+   * 2. Require app selection (appSelector hook)
    *
-   * El appId se pasa como parámetro de ruta: /api/:appId/...
+   * The appId is passed as a route parameter: /api/:appId/...
    */
   await fastify.register(async (fastify) => {
-    // Aplica los hooks a todas las rutas de este scope
+    // Apply hooks to all routes in this scope
     fastify.addHook('onRequest', auth);
     fastify.addHook('onRequest', appSelector);
 
@@ -140,7 +140,7 @@ async function routes(fastify, options) {
   });
 
   /**
-   * 404 para rutas de API no encontradas
+   * 404 for API routes not found
    */
   fastify.setNotFoundHandler((request, reply) => {
     reply.status(404).send({

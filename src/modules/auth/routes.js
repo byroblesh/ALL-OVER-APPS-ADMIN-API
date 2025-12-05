@@ -5,18 +5,18 @@ const { errorResponse, securityScheme } = require('../../shared/swagger-schemas'
 /**
  * Auth Routes (Fastify Plugin)
  *
- * Prefijo: /api/auth
+ * Prefix: /api/auth
  *
  * @param {FastifyInstance} fastify
  * @param {Object} options
  */
 async function authRoutes(fastify, options) {
-  // Rutas públicas
+  // Public routes
   fastify.post('/login', {
     schema: {
       tags: ['Auth'],
-      summary: 'Login del equipo del Back Office',
-      description: 'Autenticación de usuarios del equipo interno usando email y contraseña',
+      summary: 'Back Office team login',
+      description: 'Authentication for internal team users using email and password',
       body: {
         type: 'object',
         required: ['email', 'password'],
@@ -30,7 +30,7 @@ async function authRoutes(fastify, options) {
           type: 'object',
           properties: {
             success: { type: 'boolean', example: true },
-            token: { type: 'string', description: 'JWT token para autenticación' },
+            token: { type: 'string', description: 'JWT token for authentication' },
             user: {
               type: 'object',
               properties: {
@@ -51,15 +51,15 @@ async function authRoutes(fastify, options) {
   fastify.post('/refresh', {
     schema: {
       tags: ['Auth'],
-      summary: 'Refrescar token JWT',
-      description: 'Genera un nuevo token JWT a partir de uno existente',
+      summary: 'Refresh JWT token',
+      description: 'Generate a new JWT token from an existing one',
       security: securityScheme,
       response: {
         200: {
           type: 'object',
           properties: {
             success: { type: 'boolean', example: true },
-            token: { type: 'string', description: 'Nuevo JWT token' },
+            token: { type: 'string', description: 'New JWT token' },
             user: { type: 'object' }
           }
         },
@@ -68,12 +68,12 @@ async function authRoutes(fastify, options) {
     }
   }, controller.refresh);
 
-  // Solo desarrollo
+  // Development only
   fastify.post('/hash-password', {
     schema: {
       tags: ['Auth'],
-      summary: '[DEV] Generar hash de password',
-      description: 'Endpoint de desarrollo para generar hashes bcrypt de contraseñas',
+      summary: '[DEV] Generate password hash',
+      description: 'Development endpoint to generate bcrypt hashes for passwords',
       body: {
         type: 'object',
         required: ['password'],
@@ -85,19 +85,19 @@ async function authRoutes(fastify, options) {
         200: {
           type: 'object',
           properties: {
-            hash: { type: 'string', description: 'Hash bcrypt de la contraseña' }
+            hash: { type: 'string', description: 'Bcrypt hash of the password' }
           }
         }
       }
     }
   }, controller.hashPassword);
 
-  // Rutas protegidas
+  // Protected routes
   fastify.get('/me', {
     schema: {
       tags: ['Auth'],
-      summary: 'Información del usuario actual',
-      description: 'Obtiene la información del usuario autenticado',
+      summary: 'Current user information',
+      description: 'Get authenticated user information',
       security: securityScheme,
       response: {
         200: {
