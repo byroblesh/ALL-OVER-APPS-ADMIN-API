@@ -1,0 +1,30 @@
+{
+  "name": "all-over-apps-admin-api",
+  "version": "1.0.0",
+  "description": "API de administración centralizada para todas las aplicaciones de ALL OVER APPS",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "bun --watch src/index.js",
+    "start": "bun src/index.js",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.5.0",
+    "@fastify/formbody": "^7.4.0",
+    "@fastify/helmet": "^11.1.1",
+    "@fastify/static": "^7.0.4",
+    "@fastify/swagger": "^8.15.0",
+    "@fastify/swagger-ui": "^4.1.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.25.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.3"
+  },
+  "devDependencies": {
+    "pino-pretty": "^10.3.1"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
