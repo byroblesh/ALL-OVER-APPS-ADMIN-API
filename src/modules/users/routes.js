@@ -4,19 +4,19 @@ const { errorResponse, securityScheme, appIdParam, paginationQuery } = require('
 /**
  * Users Routes (Fastify Plugin)
  *
- * Todas estas rutas están prefijadas con /api/:appId/users
- * y requieren autenticación + selección de app (hooks aplicados en routes/index.js)
+ * All routes are prefixed with /api/:appId/users
+ * and require authentication + app selection (hooks applied in routes/index.js)
  *
  * @param {FastifyInstance} fastify
  * @param {Object} options
  */
 async function usersRoutes(fastify, options) {
-  // Rutas de estadísticas y metadata (antes de :userId para evitar conflictos)
+  // Stats and metadata routes (before :userId to avoid conflicts)
   fastify.get('/stats', {
     schema: {
       tags: ['Users'],
-      summary: 'Estadísticas de usuarios',
-      description: 'Obtiene estadísticas agregadas de usuarios de una app',
+      summary: 'User statistics',
+      description: 'Get aggregated user statistics for an app',
       security: securityScheme,
       params: {
         type: 'object',
@@ -27,7 +27,7 @@ async function usersRoutes(fastify, options) {
       querystring: {
         type: 'object',
         properties: {
-          shop: { type: 'string', description: 'Filtrar por tienda específica' }
+          shop: { type: 'string', description: 'Filter by specific shop' }
         }
       },
       response: {
@@ -53,8 +53,8 @@ async function usersRoutes(fastify, options) {
   fastify.get('/shops', {
     schema: {
       tags: ['Users'],
-      summary: 'Lista de tiendas únicas',
-      description: 'Obtiene todas las tiendas Shopify únicas que tienen usuarios',
+      summary: 'List of unique shops',
+      description: 'Get all unique Shopify shops that have users',
       security: securityScheme,
       params: {
         type: 'object',
@@ -78,12 +78,12 @@ async function usersRoutes(fastify, options) {
     }
   }, controller.getShops);
 
-  // CRUD de usuarios
+  // User CRUD operations
   fastify.get('/', {
     schema: {
       tags: ['Users'],
-      summary: 'Lista de usuarios',
-      description: 'Obtiene lista paginada de usuarios con filtros',
+      summary: 'List users',
+      description: 'Get paginated list of users with filters',
       security: securityScheme,
       params: {
         type: 'object',
@@ -95,9 +95,9 @@ async function usersRoutes(fastify, options) {
         type: 'object',
         properties: {
           ...paginationQuery,
-          shop: { type: 'string', description: 'Filtrar por tienda' },
+          shop: { type: 'string', description: 'Filter by shop' },
           status: { type: 'string', enum: ['active', 'inactive', 'pending', 'blocked'] },
-          search: { type: 'string', description: 'Búsqueda por email o nombre' },
+          search: { type: 'string', description: 'Search by email or name' },
           sortBy: { type: 'string', default: 'createdAt' },
           sortOrder: { type: 'string', enum: ['asc', 'desc'], default: 'desc' }
         }
