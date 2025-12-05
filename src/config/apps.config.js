@@ -1,10 +1,10 @@
 /**
- * Configuración de aplicaciones
- * 
- * Este archivo define las apps disponibles en el Back Office.
- * Para agregar una nueva app:
- * 1. Añade las variables MONGODB_APP{N}_URI y MONGODB_APP{N}_NAME en .env
- * 2. Añade la configuración aquí siguiendo el patrón existente
+ * Apps configuration
+ *
+ * This file defines the apps available in the Back Office.
+ * To add a new app:
+ * 1. Add MONGODB_APP{N}_URI and MONGODB_APP{N}_NAME variables to .env
+ * 2. Add the configuration here following the existing pattern
  */
 
 const apps = {
@@ -12,33 +12,33 @@ const apps = {
     id: 'banners-all-over',
     name: process.env.MONGODB_APP1_NAME || 'Banners All Over',
     mongoUri: process.env.MONGODB_APP1_URI,
-    // Colecciones que esta app expone al backoffice
-    collections: ['users', 'templates', 'orders', 'settings', 'shops', 'banners'],
-    // Permisos específicos de la app (opcional)
+    // Collections that this app exposes to the backoffice
+    collections: ['email-templates', 'shops', 'banners', 'metricevents', 'metricsaggregates', 'feedbacks', 'logs', 'screenshots', 'sessions', 'support-messages', 'feature-flags', 'plans'],
+    // App-specific permissions (optional)
     features: {
       canEditTemplates: true,
-      canEditUsers: true,
+      canManageShops: true,
       canViewMetrics: true,
       canManageBanners: true,
     }
   },
-  // Descomentado cuando tengas la segunda app configurada:
+  // Uncomment when you have the second app configured:
   // 'app2': {
   //   id: 'app2',
   //   name: process.env.MONGODB_APP2_NAME || 'App Two',
   //   mongoUri: process.env.MONGODB_APP2_URI,
-  //   collections: ['users', 'templates', 'orders', 'settings'],
+  //   collections: ['email-templates', 'shops'],
   //   features: {
   //     canEditTemplates: true,
-  //     canEditUsers: true,
+  //     canManageShops: true,
   //     canViewMetrics: true,
   //   }
   // },
-  // Añade más apps aquí siguiendo el mismo patrón
+  // Add more apps here following the same pattern
 };
 
 /**
- * Obtiene todas las apps configuradas
+ * Get all configured apps
  */
 const getAllApps = () => {
   return Object.values(apps).map(app => ({
@@ -49,7 +49,7 @@ const getAllApps = () => {
 };
 
 /**
- * Obtiene la configuración de una app específica
+ * Get configuration for a specific app
  */
 const getAppConfig = (appId) => {
   const app = apps[appId];
@@ -60,7 +60,7 @@ const getAppConfig = (appId) => {
 };
 
 /**
- * Valida que una app existe
+ * Validate that an app exists
  */
 const appExists = (appId) => {
   return !!apps[appId];

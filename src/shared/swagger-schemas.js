@@ -1,8 +1,8 @@
 /**
- * Swagger/OpenAPI Schemas compartidos
+ * Shared Swagger/OpenAPI Schemas
  */
 
-// Respuestas comunes
+// Common responses
 const successResponse = {
   type: 'object',
   properties: {
@@ -19,16 +19,16 @@ const errorResponse = {
   }
 };
 
-// Parámetros comunes
+// Common parameters
 const appIdParam = {
   type: 'string',
-  description: 'ID de la aplicación (ej: banners-all-over)',
+  description: 'Application ID (e.g.: banners-all-over)',
   example: 'banners-all-over'
 };
 
 const paginationQuery = {
-  page: { type: 'integer', minimum: 1, default: 1, description: 'Número de página' },
-  limit: { type: 'integer', minimum: 1, maximum: 100, default: 20, description: 'Items por página' }
+  page: { type: 'integer', minimum: 1, default: 1, description: 'Page number' },
+  limit: { type: 'integer', minimum: 1, maximum: 100, default: 20, description: 'Items per page' }
 };
 
 // Security

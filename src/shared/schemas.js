@@ -2,107 +2,153 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 /**
- * Schemas compartidos entre todas las apps
- * 
- * Estos schemas representan la estructura común de datos
- * que se administra desde el Back Office.
+ * Shared schemas for all apps
+ *
+ * These schemas represent the common data structures
+ * managed from the Back Office.
+ *
+ * Based on Banners All Over actual schemas.
  */
 
-// Schema para usuarios de las apps (no del backoffice)
-const AppUserSchema = new Schema({
-  shopifyCustomerId: {
-    type: String,
-    index: true,
-  },
-  shop: {
+// Schema for email templates (matches real Banners All Over schema)
+const EmailTemplateSchema = new Schema({
+  name: {
     type: String,
     required: true,
+    trim: true,
     index: true,
+  },
+  language: {
+    type: String,
+    required: true,
+    default: 'en',
+    enum: ['en', 'es', 'fr', 'de', 'it', 'pt'],
+    index: true,
+  },
+  subject: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  htmlTemplate: {
+    type: String,
+    required: true,
+  },
+  textTemplate: {
+    type: String,
+    required: true,
+  },
+  variables: {
+    type: [String],
+    default: [],
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+    index: true,
+  },
+  version: {
+    type: Number,
+    default: 1,
+    min: 1,
+  },
+  shopId: {
+    type: String,
+    required: false,
+    trim: true,
+    index: true,
+  },
+}, {
+  timestamps: true,
+  collection: 'email-templates',
+});
+
+// Schema for shops (matches real Banners All Over schema)
+const ShopSchema = new Schema({
+  id: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  },
+  name: {
+    type: String,
+    required: true,
+    trim: true,
   },
   email: {
     type: String,
     required: true,
+    trim: true,
     lowercase: true,
+  },
+  domain: {
+    type: String,
+    required: true,
     trim: true,
   },
-  name: {
+  myshopifyDomain: {
     type: String,
+    required: true,
     trim: true,
   },
-  status: {
-    type: String,
-    enum: ['active', 'inactive', 'pending', 'blocked'],
-    default: 'active',
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  lastLoginAt: {
+    type: Date,
+    default: Date.now,
+  },
+  plan: {
+    type: {
+      type: String,
+      enum: ['basic', 'standard', 'pro', 'business', 'enterprise'],
+      default: 'basic',
+    },
+    activatedAt: {
+      type: Date,
+      default: Date.now,
+    },
+    trialEndsAt: Date,
   },
   settings: {
     type: Schema.Types.Mixed,
     default: {},
   },
-  metadata: {
+  auth: {
     type: Schema.Types.Mixed,
     default: {},
   },
-}, {
-  timestamps: true,
-  collection: 'users', // Nombre de colección consistente
-});
-
-// Schema para templates de email
-const EmailTemplateSchema = new Schema({
-  shop: {
-    type: String,
-    required: true,
-    index: true,
-  },
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  slug: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true,
-  },
-  subject: {
-    type: String,
-    required: true,
-  },
-  htmlContent: {
-    type: String,
-    required: true,
-  },
-  textContent: {
-    type: String,
-  },
-  variables: [{
-    key: String,
-    description: String,
-    defaultValue: String,
-  }],
-  isActive: {
+  needsAuthUpdate: {
     type: Boolean,
-    default: true,
-  },
-  category: {
-    type: String,
-    enum: ['transactional', 'marketing', 'notification', 'system'],
-    default: 'transactional',
-  },
-  lastModifiedBy: {
-    type: String, // ID del admin del backoffice
+    default: false,
   },
 }, {
   timestamps: true,
-  collection: 'email_templates',
+  collection: 'shops',
 });
 
-// Schema para métricas/analytics (lectura principalmente)
+// Schema for banners
+const BannerSchema = new Schema({
+  type: {
+    type: String,
+    required: true,
+  },
+  order_id: String,
+  level: String,
+  message: String,
+  order_name: String,
+}, {
+  timestamps: true,
+  collection: 'banners',
+});
+
+// Schema for metrics/analytics
 const MetricsSchema = new Schema({
   shop: {
     type: String,
-    required: true,
     index: true,
   },
   type: {
@@ -124,39 +170,12 @@ const MetricsSchema = new Schema({
   },
 }, {
   timestamps: true,
-  collection: 'metrics',
-});
-
-// Schema para configuración por tienda
-const ShopSettingsSchema = new Schema({
-  shop: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  appSettings: {
-    type: Schema.Types.Mixed,
-    default: {},
-  },
-  features: {
-    type: Schema.Types.Mixed,
-    default: {},
-  },
-  billing: {
-    plan: String,
-    status: String,
-    trialEndsAt: Date,
-  },
-  installedAt: Date,
-  lastActiveAt: Date,
-}, {
-  timestamps: true,
-  collection: 'shop_settings',
+  collection: 'metricevents',
 });
 
 module.exports = {
-  AppUserSchema,
   EmailTemplateSchema,
+  ShopSchema,
+  BannerSchema,
   MetricsSchema,
-  ShopSettingsSchema,
 };
